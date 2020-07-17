@@ -11,14 +11,26 @@ import Firebase
 
 class ItemViewController: UIViewController {
     
+    
+    
     @IBAction func logOut(_ sender: Any) {
         loggedOut()
+        
     }
     
+    
     override func viewDidLoad() {
-        
+        setupNavigationBar()
         // Do any additional setup after loading the view.
     }
+    
+    private func setupNavigationBar(){
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.barTintColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
+        
+    }
+    
+    
     
     func loggedOut(){
         do {

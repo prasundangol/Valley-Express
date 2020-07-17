@@ -43,7 +43,7 @@ class LoginViewController: UIViewController {
         Utilities.styleTextField(passwordTextField)
         Utilities.styleFilledButton(loginButton)
         Utilities.styleHollowButton(signUpButton)
-        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
     }
     
@@ -65,7 +65,7 @@ class LoginViewController: UIViewController {
             }
             else{
                 let itemViewController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.itemViewController) as! ItemViewController
-                self.view.window?.rootViewController = itemViewController
+                self.navigationController?.pushViewController(itemViewController, animated: false)
                 self.view.window?.makeKeyAndVisible()
             }
             

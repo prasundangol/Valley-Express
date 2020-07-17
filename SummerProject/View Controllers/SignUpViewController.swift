@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController {
     func transitionToItems(){
         
         let itemViewController = storyboard?.instantiateViewController(identifier: Constants.Stroyboard.itemViewController) as! ItemViewController
-        view.window?.rootViewController = itemViewController
+        self.navigationController?.pushViewController(itemViewController, animated: false)
         view.window?.makeKeyAndVisible()
         
     }

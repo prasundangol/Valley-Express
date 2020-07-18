@@ -30,8 +30,10 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUpElements()
+        setupNavigationBar()
+        
     }
     
     func setUpElements() {
@@ -47,7 +49,6 @@ class SignUpViewController: UIViewController {
         Utilities.styleTextField(locationTextField)
         Utilities.styleTextField(phnoTextField)
         Utilities.styleFilledButton(signUpButton)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     //Check if everything is validated. Return nil of ok else return error message.
@@ -130,10 +131,17 @@ class SignUpViewController: UIViewController {
         
     }
     
+    
     func showError(_ message: String){
         errorLabel.text = message
         errorLabel.alpha = 1
         
+    }
+    
+    private func setupNavigationBar(){
+           navigationController?.setNavigationBarHidden(false, animated: true)
+           navigationController?.navigationBar.barTintColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
+            navigationController?.navigationBar.tintColor = .white
     }
     
     func transitionToItems(){

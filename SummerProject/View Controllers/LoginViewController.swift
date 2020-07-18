@@ -26,12 +26,14 @@ class LoginViewController: UIViewController {
 
         setUpElements()
         
+
     }
-    override func viewDidAppear(_ animated: Bool){
-     super.viewDidAppear(animated)
-     if Auth.auth().currentUser != nil {
-        self.performSegue(withIdentifier: "alreadyLoggedIn", sender: nil)
-    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        if Auth.auth().currentUser != nil {
+            self.performSegue(withIdentifier: "alreadyLoggedIn", sender: nil)
+        }
     }
     
     func setUpElements(){
@@ -43,7 +45,6 @@ class LoginViewController: UIViewController {
         Utilities.styleTextField(passwordTextField)
         Utilities.styleFilledButton(loginButton)
         Utilities.styleHollowButton(signUpButton)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
     }
     
@@ -65,7 +66,7 @@ class LoginViewController: UIViewController {
             }
             else{
                 let itemViewController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.itemViewController) as! ItemViewController
-                self.navigationController?.pushViewController(itemViewController, animated: false)
+                self.navigationController?.pushViewController(itemViewController, animated: true)
                 self.view.window?.makeKeyAndVisible()
             }
             

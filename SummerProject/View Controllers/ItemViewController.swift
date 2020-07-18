@@ -25,8 +25,10 @@ class ItemViewController: UIViewController {
     }
     
     private func setupNavigationBar(){
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
+        let attribute = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Medium" , size: 19)]
+        navigationController?.navigationBar.titleTextAttributes = attribute as [NSAttributedString.Key : Any]
         
     }
     

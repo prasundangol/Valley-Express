@@ -40,31 +40,7 @@ class ItemViewController: UIViewController {
 //        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 15))
 //        itemTable.tableHeaderView = header
         
-        getItems()
-        
-
-       //Setting values for cells in table view
-//        for index in 0...keys.count-1{
-//
-//        }
-//        ref.child("pizza").observe(DataEventType.value) { (snapshot) in
-//            if snapshot.childrenCount > 0{
-//                self.itemList.removeAll()
-//                for items in snapshot.children.allObjects as![DataSnapshot]{
-//                    let itemObject = items.value as? [String: Any]
-//                    let itemName = itemObject?["item"]
-//                    let itemDesc = itemObject?["desc"]
-//                    let itemPhoto = itemObject?["photo"]
-//                    let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String)
-//                    self.itemList.append(item)
-//                }
-//                self.tots.append(self.itemList)
-//                self.itemTable.reloadData()
-//            }
-//
-//
-//        }
-        
+        getItems()        
     }
     
     //Seting up navigation bar
@@ -122,6 +98,14 @@ class ItemViewController: UIViewController {
                 self.view.window?.rootViewController = initial
                 self.view.window?.makeKeyAndVisible()
         }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Stroyboard.itemToDetailSegue{
+            let destVC = segue.destination as! DetailViewController
+            destVC.item = sender as? Model
+            
+        }
+    }
         
     }
 
@@ -131,7 +115,6 @@ class ItemViewController: UIViewController {
 extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return tots.count
     }
     
@@ -140,7 +123,6 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(tots[section].count)
         return tots[section].count
     }
     
@@ -195,6 +177,12 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
         header.textLabel?.textColor = UIColor.black
         vw.backgroundColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
         header.backgroundView = vw
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item: Model
+        item = tots[indexPath.section][indexPath.row]
+        performSegue(withIdentifier: Constants.Stroyboard.itemToDetailSegue, sender: item)
     }
     
     

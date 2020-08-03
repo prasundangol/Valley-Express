@@ -13,6 +13,10 @@ struct Constants {
         static let itemViewController = "ItemVC"
         static let loginViewController = "LoginVC"
         static let itemCell = "itemCell"
+        static let itemToDetailSegue = "itemToDetail"
+        static let cartCell = "cartCell"
+        static let cartToDetailSegue = "cartToDetail"
+        
     }
     
     

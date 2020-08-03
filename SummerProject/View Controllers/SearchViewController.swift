@@ -17,11 +17,13 @@ class SearchViewController: UIViewController {
     var itemList = [SearchModel]()
     var ref = Database.database().reference().child("items")
     lazy var searchBar:UISearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
+    var searching  = false
+    var searched = [AnyObject]()
+    
 
     
     @IBOutlet weak var searchTableView: UITableView!
     
-    //var itemList = ItemViewController.itemList
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,12 +32,11 @@ class SearchViewController: UIViewController {
         
         searchTableView.delegate = self
         searchTableView.dataSource = self
-        //searchBar.delegate = self
+        searchBar.delegate = self
         getItems()
         setupSearchBar()
         
 
-        // Do any additional setup after loading the view.
     }
     
 
@@ -74,6 +75,7 @@ class SearchViewController: UIViewController {
                                 self.itemList.append(item)
                              }
                             self.tots.append(contentsOf: self.itemList)
+                            print(self.tots)
                             DispatchQueue.main.async {
                                 self.searchTableView.reloadData()
     }
@@ -85,31 +87,53 @@ class SearchViewController: UIViewController {
             }
             
         }
+    
 }
 
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //print(tots[section].count)
-        return tots.count
+        if searching{
+            return searched.count
+        }
+        else{
+            return tots.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchTableViewCell
         let item: SearchModel
         item = tots[indexPath.row]
-        cell.setCell(item)
+        if searching{
+            cell.itemLabel.text = searched[indexPath.row] as? String
+        }
+        else{
+            cell.setCell(item)
+
+        }
 
         return cell
     }
     
     
     
+    
+    
 }
 
-//extension SearchViewController: UISearchBarDelegate{
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        <#code#>
-//    }
-//
-//}
+extension SearchViewController: UISearchBarDelegate{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searched = tots as [AnyObject]
+        if searchText.isEmpty == false {
+            searched = tots.filter({return $0.name == searchText}) as [AnyObject]
+            searching = true
+        }
+        DispatchQueue.main.async {
+            self.searchTableView.reloadData()
+
+        }
+        
+    }
+
+}

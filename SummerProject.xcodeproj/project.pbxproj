@@ -10,7 +10,6 @@
 		5A5E5806843DF55E7BE50B70 /* Pods_SummerProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BA119FCB99114C2B6A662B3 /* Pods_SummerProject.framework */; };
 		CD082EBA24D68A7100A3B267 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD082EB924D68A7100A3B267 /* DetailViewController.swift */; };
 		CD0D8A2124C973F400958143 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D8A2024C973F400958143 /* Model.swift */; };
-		CD0D8A2324C9750600958143 /* ItemListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D8A2224C9750600958143 /* ItemListModel.swift */; };
 		CD284E1224D7D7CD00282D65 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD284E1124D7D7CD00282D65 /* CartViewController.swift */; };
 		CD284E1424D7DADD00282D65 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD284E1324D7DADD00282D65 /* CartTableViewCell.swift */; };
 		CD6886AE24B9D6CC006622F3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6886AD24B9D6CC006622F3 /* AppDelegate.swift */; };
@@ -35,7 +34,6 @@
 		9D52315CD722BD6AD07EF5A4 /* Pods-SummerProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerProject.release.xcconfig"; path = "Target Support Files/Pods-SummerProject/Pods-SummerProject.release.xcconfig"; sourceTree = "<group>"; };
 		CD082EB924D68A7100A3B267 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		CD0D8A2024C973F400958143 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		CD0D8A2224C9750600958143 /* ItemListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListModel.swift; sourceTree = "<group>"; };
 		CD284E1124D7D7CD00282D65 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		CD284E1324D7DADD00282D65 /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		CD6886AA24B9D6CC006622F3 /* SummerProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SummerProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,7 +106,6 @@
 				CD6886B624B9D6CF006622F3 /* Assets.xcassets */,
 				CD6886CB24B9F839006622F3 /* GoogleService-Info.plist */,
 				CD6886BB24B9D6CF006622F3 /* Info.plist */,
-				CD0D8A2224C9750600958143 /* ItemListModel.swift */,
 			);
 			path = SummerProject;
 			sourceTree = "<group>";
@@ -292,7 +289,6 @@
 				CDB02C3A24D3D2D2002A3B70 /* SearchViewController.swift in Sources */,
 				CD6886AE24B9D6CC006622F3 /* AppDelegate.swift in Sources */,
 				CD6886C924B9E9BD006622F3 /* Utilities.swift in Sources */,
-				CD0D8A2324C9750600958143 /* ItemListModel.swift in Sources */,
 				CD6886C224B9D71B006622F3 /* SignUpViewController.swift in Sources */,
 				CD0D8A2124C973F400958143 /* Model.swift in Sources */,
 				CD6886C424B9D738006622F3 /* LoginViewController.swift in Sources */,

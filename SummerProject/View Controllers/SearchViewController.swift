@@ -11,14 +11,13 @@ import FirebaseDatabase
 
 class SearchViewController: UIViewController {
     
-    var tots = [SearchModel]()
     var keys = String()
     var titleList = [String]()
-    var itemList = [SearchModel]()
+    var itemList = [Model]()
     var ref = Database.database().reference().child("items")
-    lazy var searchBar:UISearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
-    var searching  = false
-    var searched = [AnyObject]()
+    let searchController = UISearchController(searchResultsController: nil)
+    var itemsArray = [NSDictionary]()
+    var filteredItems = [NSDictionary]()
     
 
     
@@ -28,13 +27,15 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
+    
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.backgroundColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
+        definesPresentationContext = true
+        searchTableView.tableHeaderView = searchController.searchBar
         searchTableView.delegate = self
         searchTableView.dataSource = self
-        searchBar.delegate = self
         getItems()
-        setupSearchBar()
         
 
     }
@@ -49,91 +50,91 @@ class SearchViewController: UIViewController {
         
     }
     
-    private func setupSearchBar(){
-        searchBar.placeholder = "Search"
-        let textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
-        let rightNavBarButton = UIBarButtonItem(customView:searchBar)
-        self.navigationItem.rightBarButtonItem = rightNavBarButton
-        textFieldInsideSearchBar?.textColor = .white
-
+    
+    func getItems(){
+        ref.observe(.value) { (snap) in
+        for child in snap.children{
+            let data = child as! DataSnapshot
+            self.keys = data.key
+            self.titleList.append(self.keys)
+            self.ref.child(self.keys).queryOrdered(byChild: "item").observe(.childAdded , with: { (snapshot) in
+            self.itemsArray.append(snapshot.value as! NSDictionary)
+            
+            self.searchTableView.insertRows(at: [IndexPath(row: self.itemsArray.count-1, section: 0)], with: .automatic)
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
         
     }
-    func getItems(){
-            //Setting items in cell with section seperation
-            ref.observe(.value) { (snap) in
-                for child in snap.children{
-                    let data = child as! DataSnapshot
-                    self.keys = data.key
-                    self.titleList.append(self.keys)
-                    self.ref.child(self.keys).observe(DataEventType.value) { (snapshot) in
-                         if snapshot.childrenCount > 0{
-                            self.itemList.removeAll()
-                             for items in snapshot.children.allObjects as![DataSnapshot]{
-                                 let itemObject = items.value as? [String: Any]
-                                 let itemName = itemObject?["item"]
-                                let item = SearchModel(name: itemName as? String)
-                                self.itemList.append(item)
-                             }
-                            self.tots.append(contentsOf: self.itemList)
-                            print(self.tots)
-                            DispatchQueue.main.async {
-                                self.searchTableView.reloadData()
     }
-                         }
-                         
-                         
-                     }
-                }
-            }
+    
+}
+    //Moving data to view at detail view controller
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Stroyboard.searchToDetailSegue{
+            let destVC = segue.destination as! DetailViewController
+            destVC.item = sender as? Model
             
         }
-    
+    }
 }
 
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searching{
-            return searched.count
+        if searchController.isActive && searchController.searchBar.text != ""{
+            return filteredItems.count
+            
         }
-        else{
-            return tots.count
-        }
+        return itemsArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchTableViewCell
-        let item: SearchModel
-        item = tots[indexPath.row]
-        if searching{
-            cell.itemLabel.text = searched[indexPath.row] as? String
+        let item: NSDictionary?
+        let test: Model?
+        if searchController.isActive && searchController.searchBar.text != ""{
+            //itemList.removeAll()
+            item = filteredItems[indexPath.row]
+            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String)
         }
         else{
-            cell.setCell(item)
-
+            item = self.itemsArray[indexPath.row]
+            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String)
         }
-
+        cell.itemLabel.text = item?["item"] as? String
+        
+        itemList.append(test!)
+        print(itemList)
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item: Model
+        item = itemList[indexPath.row]
+                performSegue(withIdentifier: Constants.Stroyboard.searchToDetailSegue, sender: item)
+    }
     
     
     
 }
 
-extension SearchViewController: UISearchBarDelegate{
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searched = tots as [AnyObject]
-        if searchText.isEmpty == false {
-            searched = tots.filter({return $0.name == searchText}) as [AnyObject]
-            searching = true
+extension SearchViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredContent(searchText: self.searchController.searchBar.text!)
+    }
+    
+    func filteredContent(searchText: String){
+        self.filteredItems = self.itemsArray.filter{item in
+            let itemName = item["item"] as? String
+            return((itemName?.lowercased().hasPrefix(searchText.lowercased())))!
+            
         }
-        DispatchQueue.main.async {
-            self.searchTableView.reloadData()
-
-        }
+        searchTableView.reloadData()
+        itemList.removeAll()
         
     }
-
+    
+    
 }

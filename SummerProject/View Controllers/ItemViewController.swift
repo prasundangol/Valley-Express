@@ -24,7 +24,6 @@ class ItemViewController: UIViewController {
                 ["yyy","lll"]]
     var tots = [[Model]]()
     let data2 = ["ello","mate","fast"]
-    var item = ItemListModel()
     var keys = String()
     var titleList = [String]()
     var itemList = [Model]()
@@ -63,11 +62,12 @@ class ItemViewController: UIViewController {
                      if snapshot.childrenCount > 0{
                         self.itemList.removeAll()
                          for items in snapshot.children.allObjects as![DataSnapshot]{
-                             let itemObject = items.value as? [String: Any]
+                             let itemObject = items.value as? [String: AnyObject]
                              let itemName = itemObject?["item"]
                              let itemDesc = itemObject?["desc"]
                              let itemPhoto = itemObject?["photo"]
-                             let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String)
+                            let itemPrice = itemObject?["price"]
+                            let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String)
                             self.itemList.append(item)
                          }
                         self.tots.append(self.itemList)
@@ -148,22 +148,6 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
         return supp
     }
 
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let vw = UIView()
-//        var suppose = String()
-//
-//        let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: itemTable.bounds.size.width, height: itemTable.bounds.size.height))
-//        for index in 0...section{
-//            suppose = titleList[index]
-//        }
-//        headerLabel.text = suppose
-//        headerLabel.font = UIFont(name:"Verdana", size:20)
-//        headerLabel.sizeToFit()
-//        vw.addSubview(headerLabel)
-//        vw.backgroundColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 0.7)
-//
-//        return vw
-//    }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 15

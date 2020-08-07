@@ -41,7 +41,8 @@ class CartViewController: UIViewController {
                                  let itemName = itemObject?["item"]
                                  let itemDesc = itemObject?["desc"]
                                  let itemPhoto = itemObject?["photo"]
-                                 let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String)
+                                let itemPrice = itemObject?["price"]
+                                let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String)
                                 self.itemList.append(item)
                              }
                             DispatchQueue.main.async {

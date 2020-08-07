@@ -328,11 +328,12 @@
                     <navigationItem key="navigationItem" id="sMf-gm-0u8"/>
                     <connections>
                         <outlet property="searchTableView" destination="oOa-hu-jmy" id="orW-vc-6aA"/>
+                        <segue destination="9lv-p9-BfI" kind="presentation" identifier="searchToDetail" id="Ix5-Pe-9ZQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aNc-d7-DTx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5281" y="-45"/>
+            <point key="canvasLocation" x="5313" y="-46"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="9rr-SJ-1WU">
@@ -343,7 +344,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="22C-Xd-FVz">
-                                <rect key="frame" x="20" y="50" width="374" height="610"/>
+                                <rect key="frame" x="20" y="50" width="374" height="655"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b7v-Wx-e6g">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
@@ -356,7 +357,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="xhk-bw-aLV"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -371,8 +372,17 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibC-aI-OYs">
+                                        <rect key="frame" x="0.0" y="490" width="374" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="JdW-xt-whD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                        <color key="textColor" red="0.85490196080000003" green="0.21960784310000001" blue="0.1960784314" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fyN-Uq-rlh">
-                                        <rect key="frame" x="0.0" y="490" width="374" height="50"/>
+                                        <rect key="frame" x="0.0" y="535" width="374" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="Vy8-WL-h0v"/>
                                         </constraints>
@@ -385,7 +395,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxi-zI-OuJ">
-                                        <rect key="frame" x="0.0" y="560" width="374" height="50"/>
+                                        <rect key="frame" x="0.0" y="605" width="374" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="2TE-mM-OQE"/>
                                         </constraints>
@@ -424,6 +434,7 @@
                         <outlet property="descriptionView" destination="MJy-Gu-3rb" id="PKZ-gS-ZS3"/>
                         <outlet property="itemImage" destination="b7v-Wx-e6g" id="O9e-2u-Jbk"/>
                         <outlet property="orderNowButton" destination="kxi-zI-OuJ" id="Esq-9F-n3L"/>
+                        <outlet property="priceLabel" destination="ibC-aI-OYs" id="tGt-7y-EEc"/>
                         <outlet property="titlelabel" destination="gXG-9S-17y" id="aeI-L2-5EE"/>
                     </connections>
                 </viewController>
@@ -532,7 +543,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="PDW-lP-1ls"/>
+        <segue reference="Ix5-Pe-9ZQ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Valley-Express" width="5236" height="3783"/>

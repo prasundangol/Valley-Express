@@ -24,10 +24,12 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var addToCartButton: UIButton!
     
     @IBOutlet weak var orderNowButton: UIButton!
+    
+    @IBOutlet weak var priceLabel: UILabel!
+    
     var item: Model?
     let db = Firestore.firestore()
     let ref = Database.database().reference().child("cart")
-    var check = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +42,8 @@ class DetailViewController: UIViewController {
         titlelabel.text = item?.name
         
         descriptionView.text = item?.desc
+        
+        priceLabel.text = ("Rs. ") + (item?.price)!
         
             let url = URL(string: self.item!.photo!)
             
@@ -92,8 +96,9 @@ class DetailViewController: UIViewController {
                             let uid = user.uid
                     
                             let add = ["item": self.item?.name,
-                               "desc":self.item?.desc,
-                               "photo": self.item?.photo]
+                                "desc":self.item?.desc,
+                                "photo": self.item?.photo,
+                                "price": self.item?.price]
                             
                             self.ref.child(uid).child((self.item?.name)!).setValue(add)
 

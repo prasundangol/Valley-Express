@@ -13,7 +13,7 @@ class SearchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var itemLabel: UILabel!
     
-    var item: SearchModel?
+    var item: AnyObject?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,14 +26,14 @@ class SearchTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setCell(_ i:SearchModel){
+    func setCell(_ i:AnyObject){
         self.item = i
         
         //Ensure we have items in the database
         guard self.item != nil else{
             return
         }
-        self.itemLabel.text = item?.name
+        self.itemLabel.text = item?.string
         
         
     }

@@ -16,6 +16,7 @@ struct Constants {
         static let itemToDetailSegue = "itemToDetail"
         static let cartCell = "cartCell"
         static let cartToDetailSegue = "cartToDetail"
+        static let searchToDetailSegue = "searchToDetail"
         
     }
     

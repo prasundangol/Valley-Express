@@ -12,17 +12,15 @@ class Model{
     var name: String?
     var photo: String?
     var desc: String?
+    var price: String?
     
-    init(name: String, photo: String, desc: String){
+    init(name: String, photo: String, desc: String, price: String){
         self.name = name
         self.photo = photo
         self.desc = desc
+        self.price = price
         
     }
     
 }
 
-struct SearchModel{
-    var name: String?
-    
-}

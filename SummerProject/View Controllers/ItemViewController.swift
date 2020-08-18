@@ -9,16 +9,21 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import SideMenu
 
-class ItemViewController: UIViewController {
+class ItemViewController: UIViewController, MenuControllerDelegate  {
+    
+    
     
     @IBOutlet weak var itemTable: UITableView!
     
-    @IBAction func logOut(_ sender: Any) {
+    @IBAction func didTappedSideMenu(_ sender: Any) {
         
-        loggedOut()
+        present(sideMenu!,animated: true)
         
     }
+    
+    private var sideMenu: SideMenuNavigationController?
     let data = [["adf","afdg","dfgd"],
                 ["kkk","sss","tttt"],
                 ["yyy","lll"]]
@@ -30,16 +35,21 @@ class ItemViewController: UIViewController {
     var ref = Database.database().reference().child("items")
     
     
+    
     override func viewDidLoad() {
+        let menu = SideMenuTableViewController(with: ["Menu","Cart","Search","My Orders"])
+        sideMenu = SideMenuNavigationController (rootViewController: menu)
         setupNavigationBar()
         itemTable.delegate = self
         itemTable.dataSource = self
+        menu.delegate = self
+        getItems()
         
-        //Space at the top before first section header
-//        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 15))
-//        itemTable.tableHeaderView = header
+        //Side Menu setup
+        sideMenu?.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
         
-        getItems()        
     }
     
     //Seting up navigation bar
@@ -52,52 +62,53 @@ class ItemViewController: UIViewController {
     }
     
     func getItems(){
-        //Setting items in cell with section seperation
-        ref.observe(.value) { (snap) in
-            for child in snap.children{
-                let data = child as! DataSnapshot
-                self.keys = data.key
-                self.titleList.append(self.keys)
-                self.ref.child(self.keys).observe(DataEventType.value) { (snapshot) in
-                     if snapshot.childrenCount > 0{
-                        self.itemList.removeAll()
-                         for items in snapshot.children.allObjects as![DataSnapshot]{
-                             let itemObject = items.value as? [String: AnyObject]
-                             let itemName = itemObject?["item"]
-                             let itemDesc = itemObject?["desc"]
-                             let itemPhoto = itemObject?["photo"]
-                            let itemPrice = itemObject?["price"]
-                            let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String)
-                            self.itemList.append(item)
-                         }
-                        self.tots.append(self.itemList)
-                        DispatchQueue.main.async {
-                            self.itemTable.reloadData()
-}
-                     }
-                     
-                     
-                 }
+        DispatchQueue.global(qos: .userInteractive).async{
+            //Setting items in cell with section seperation
+            self.ref.observe(.value) { (snap) in
+                for child in snap.children{
+                    let data = child as! DataSnapshot
+                    self.keys = data.key
+                    self.titleList.append(self.keys)
+                    self.ref.child(self.keys).observe(DataEventType.value) { (snapshot) in
+                        if snapshot.childrenCount > 0{
+                            self.itemList.removeAll()
+                            for items in snapshot.children.allObjects as![DataSnapshot]{
+                                let itemObject = items.value as? [String: AnyObject]
+                                let itemName = itemObject?["item"]
+                                let itemDesc = itemObject?["desc"]
+                                let itemPhoto = itemObject?["photo"]
+                                let itemPrice = itemObject?["price"]
+                                let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String, quantity: "1")
+                                self.itemList.append(item)
+                            }
+                            self.tots.append(self.itemList)
+                            DispatchQueue.main.async {
+                                self.itemTable.reloadData()
+                            }
+                        }
+                        
+                        
+                    }
+                }
             }
         }
-        
     }
     
     
     //Setting up logout button
     func loggedOut(){
         do {
-                   try Auth.auth().signOut()
-               }
-            catch let signOutError as NSError {
-                   print ("Error signing out: %@", signOutError)
-               }
-               
-               let storyboard = UIStoryboard(name: "Main", bundle: nil)
-               let initial = storyboard.instantiateInitialViewController()
-                self.view.window?.rootViewController = initial
-                self.view.window?.makeKeyAndVisible()
+            try Auth.auth().signOut()
         }
+        catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let initial = storyboard.instantiateInitialViewController()
+        self.view.window?.rootViewController = initial
+        self.view.window?.makeKeyAndVisible()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Stroyboard.itemToDetailSegue{
@@ -106,11 +117,35 @@ class ItemViewController: UIViewController {
             
         }
     }
+    
+    //MARK: - Side Menu Delegate
+    func didSelectMenuItem(named: String) {
+        
+        switch named {
+        case "Cart":
+            sideMenu?.dismiss(animated: false, completion: nil)
+            
+            let cartController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.cartViewController) as! CartViewController
+            navigationController?.pushViewController(cartController, animated: true)
+            
+            break
+        case "Search":
+            sideMenu?.dismiss(animated: false, completion: nil)
+            
+            let searchController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.searchViewController) as! SearchViewController
+            navigationController?.pushViewController(searchController, animated: true)
+            break
+        default:
+            sideMenu?.dismiss(animated: true, completion: nil)
+            
+        }
         
     }
+    
+}
 
 
-   
+
 
 extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
     
@@ -126,9 +161,9 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
         return tots[section].count
     }
     
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return data[section].count
-//    }
+    //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //        return data[section].count
+    //    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Stroyboard.itemCell , for: indexPath) as! ItemTableViewCell
@@ -147,8 +182,8 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
         }
         return supp
     }
-
-
+    
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 15
     }
@@ -172,7 +207,7 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
     
     
 }
-        
-    
-    
+
+
+
 

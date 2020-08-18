@@ -13,12 +13,14 @@ class Model{
     var photo: String?
     var desc: String?
     var price: String?
+    var quantity: String?
     
-    init(name: String, photo: String, desc: String, price: String){
+    init(name: String, photo: String, desc: String, price: String, quantity: String){
         self.name = name
         self.photo = photo
         self.desc = desc
         self.price = price
+        self.quantity = quantity
         
     }
     

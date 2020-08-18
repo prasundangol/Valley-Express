@@ -11,13 +11,20 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class CartViewController: UIViewController {
+    
+    
 
     @IBOutlet weak var cartTableView: UITableView!
+    
+    
         var keys = String()
         var titleList = [String]()
         var itemList = [Model]()
         var ref = Database.database().reference().child("cart")
         let uid = Auth.auth().currentUser?.uid
+        let detailController = DetailViewController()
+
+        
     
 
     
@@ -42,7 +49,7 @@ class CartViewController: UIViewController {
                                  let itemDesc = itemObject?["desc"]
                                  let itemPhoto = itemObject?["photo"]
                                 let itemPrice = itemObject?["price"]
-                                let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String)
+                                let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String, quantity: "1")
                                 self.itemList.append(item)
                              }
                             DispatchQueue.main.async {

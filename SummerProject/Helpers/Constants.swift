@@ -17,6 +17,8 @@ struct Constants {
         static let cartCell = "cartCell"
         static let cartToDetailSegue = "cartToDetail"
         static let searchToDetailSegue = "searchToDetail"
+        static let searchViewController = "SearchVC"
+        static let cartViewController = "CartVC"
         
     }
     

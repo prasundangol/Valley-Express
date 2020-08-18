@@ -250,10 +250,10 @@
                         <viewLayoutGuide key="safeArea" id="3fG-sG-zpD"/>
                     </view>
                     <navigationItem key="navigationItem" title="Menu" id="PCa-NW-l7R">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="T8E-sM-snC">
+                        <barButtonItem key="leftBarButtonItem" image="line.horizontal.3" catalog="system" id="T8E-sM-snC">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <action selector="logOut:" destination="QsM-nW-Ap5" id="rck-E0-5HY"/>
+                                <action selector="didTappedSideMenu:" destination="QsM-nW-Ap5" id="EmN-oM-pgU"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
@@ -283,7 +283,7 @@
         <!--Search View Controller-->
         <scene sceneID="pKm-a0-KfP">
             <objects>
-                <viewController id="h8m-XO-C0S" customClass="SearchViewController" customModule="SummerProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchVC" id="h8m-XO-C0S" customClass="SearchViewController" customModule="SummerProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="O3b-ud-atM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -344,7 +344,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="22C-Xd-FVz">
-                                <rect key="frame" x="20" y="50" width="374" height="655"/>
+                                <rect key="frame" x="20" y="50" width="374" height="675.5"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b7v-Wx-e6g">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
@@ -361,19 +361,47 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MJy-Gu-3rb">
-                                        <rect key="frame" x="0.0" y="270" width="374" height="200"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJy-Gu-3rb">
+                                        <rect key="frame" x="0.0" y="270" width="374" height="120"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="200" id="uq8-qy-8i9"/>
+                                            <constraint firstAttribute="height" constant="120" id="uq8-qy-8i9"/>
                                         </constraints>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quantity :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oX6-MS-O1p">
+                                        <rect key="frame" x="0.0" y="410" width="374" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.85490196080000003" green="0.21960784310000001" blue="0.1960784314" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="o20-up-bFN">
+                                        <rect key="frame" x="0.0" y="450.5" width="374" height="40"/>
+                                        <subviews>
+                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="66e-zR-A6x">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="200" id="hgw-sz-aRi"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="stepperTapped:" destination="9lv-p9-BfI" eventType="valueChanged" id="mv5-Um-NNv"/>
+                                                </connections>
+                                            </stepper>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kPk-Yd-z8p">
+                                                <rect key="frame" x="220" y="0.0" width="154" height="40"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="wbR-nr-Jg3"/>
+                                        </constraints>
+                                    </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibC-aI-OYs">
-                                        <rect key="frame" x="0.0" y="490" width="374" height="25"/>
+                                        <rect key="frame" x="0.0" y="510.5" width="374" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="JdW-xt-whD"/>
                                         </constraints>
@@ -382,7 +410,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fyN-Uq-rlh">
-                                        <rect key="frame" x="0.0" y="535" width="374" height="50"/>
+                                        <rect key="frame" x="0.0" y="555.5" width="374" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="Vy8-WL-h0v"/>
                                         </constraints>
@@ -395,7 +423,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxi-zI-OuJ">
-                                        <rect key="frame" x="0.0" y="605" width="374" height="50"/>
+                                        <rect key="frame" x="0.0" y="625.5" width="374" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="2TE-mM-OQE"/>
                                         </constraints>
@@ -403,18 +431,24 @@
                                         <state key="normal" title="Order Now">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="orderTapped:" destination="9lv-p9-BfI" eventType="touchUpInside" id="Ae3-hD-yBV"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="b7v-Wx-e6g" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="0DB-DT-ral"/>
+                                    <constraint firstItem="ibC-aI-OYs" firstAttribute="top" secondItem="o20-up-bFN" secondAttribute="bottom" constant="20" id="8tU-XI-Pof"/>
                                     <constraint firstItem="fyN-Uq-rlh" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="9j5-nF-pxZ"/>
                                     <constraint firstItem="MJy-Gu-3rb" firstAttribute="top" secondItem="gXG-9S-17y" secondAttribute="bottom" constant="20" id="Jhy-w7-XiH"/>
                                     <constraint firstAttribute="trailing" secondItem="b7v-Wx-e6g" secondAttribute="trailing" id="KJg-yD-ciK"/>
+                                    <constraint firstAttribute="trailing" secondItem="o20-up-bFN" secondAttribute="trailing" id="PvO-qg-H01"/>
                                     <constraint firstAttribute="trailing" secondItem="kxi-zI-OuJ" secondAttribute="trailing" id="RUw-pj-jg2"/>
                                     <constraint firstAttribute="trailing" secondItem="gXG-9S-17y" secondAttribute="trailing" id="bB2-gV-LFX"/>
                                     <constraint firstAttribute="trailing" secondItem="fyN-Uq-rlh" secondAttribute="trailing" id="hZj-Jw-Gmp"/>
                                     <constraint firstItem="gXG-9S-17y" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="ir1-Zs-RNg"/>
                                     <constraint firstItem="kxi-zI-OuJ" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="mEZ-3l-pIb"/>
+                                    <constraint firstItem="o20-up-bFN" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="nf9-Nh-WmA"/>
                                     <constraint firstItem="MJy-Gu-3rb" firstAttribute="leading" secondItem="22C-Xd-FVz" secondAttribute="leading" id="tUF-0l-fBz"/>
                                     <constraint firstAttribute="trailing" secondItem="MJy-Gu-3rb" secondAttribute="trailing" id="wsW-zZ-7du"/>
                                     <constraint firstItem="b7v-Wx-e6g" firstAttribute="top" secondItem="22C-Xd-FVz" secondAttribute="top" id="xc3-6o-uuf"/>
@@ -435,6 +469,7 @@
                         <outlet property="itemImage" destination="b7v-Wx-e6g" id="O9e-2u-Jbk"/>
                         <outlet property="orderNowButton" destination="kxi-zI-OuJ" id="Esq-9F-n3L"/>
                         <outlet property="priceLabel" destination="ibC-aI-OYs" id="tGt-7y-EEc"/>
+                        <outlet property="quantityLabel" destination="kPk-Yd-z8p" id="rVn-Aj-mEq"/>
                         <outlet property="titlelabel" destination="gXG-9S-17y" id="aeI-L2-5EE"/>
                     </connections>
                 </viewController>
@@ -445,12 +480,12 @@
         <!--Cart-->
         <scene sceneID="fin-9f-C7l">
             <objects>
-                <viewController id="E1f-O1-Dex" customClass="CartViewController" customModule="SummerProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CartVC" id="E1f-O1-Dex" customClass="CartViewController" customModule="SummerProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Hap-3C-i14">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5oQ-9s-q8U">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5oQ-9s-q8U">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
@@ -543,11 +578,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Ix5-Pe-9ZQ"/>
+        <segue reference="PDW-lP-1ls"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Valley-Express" width="5236" height="3783"/>
         <image name="cart" catalog="system" width="128" height="102"/>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
     </resources>
 </document>

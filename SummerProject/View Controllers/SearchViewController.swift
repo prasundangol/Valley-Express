@@ -30,7 +30,6 @@ class SearchViewController: UIViewController {
     
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.backgroundColor = UIColor.init(red: 218/255, green: 56/255, blue: 50/255, alpha: 1)
         definesPresentationContext = true
         searchTableView.tableHeaderView = searchController.searchBar
         searchTableView.delegate = self
@@ -97,11 +96,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
         if searchController.isActive && searchController.searchBar.text != ""{
             //itemList.removeAll()
             item = filteredItems[indexPath.row]
-            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String)
+            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String, quantity: "1")
         }
         else{
             item = self.itemsArray[indexPath.row]
-            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String)
+            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String, quantity: "1")
         }
         cell.itemLabel.text = item?["item"] as? String
         
@@ -128,7 +127,7 @@ extension SearchViewController: UISearchResultsUpdating{
     func filteredContent(searchText: String){
         self.filteredItems = self.itemsArray.filter{item in
             let itemName = item["item"] as? String
-            return((itemName?.lowercased().hasPrefix(searchText.lowercased())))!
+            return((itemName?.lowercased().contains(searchText.lowercased())))!
             
         }
         searchTableView.reloadData()

@@ -28,9 +28,11 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var errorLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        activityIndicator.hidesWhenStopped = true
         setUpElements()
         setupNavigationBar()
         
@@ -83,6 +85,8 @@ class SignUpViewController: UIViewController {
     }
 
     @IBAction func signUpTapped(_ sender: Any) {
+        self.activityIndicator.startAnimating()
+
         //Validate the Fields
         let error = validateFields()
         
@@ -133,6 +137,7 @@ class SignUpViewController: UIViewController {
     
     
     func showError(_ message: String){
+        self.activityIndicator.stopAnimating()
         errorLabel.text = message
         errorLabel.alpha = 1
         

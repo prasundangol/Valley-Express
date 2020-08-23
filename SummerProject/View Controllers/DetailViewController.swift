@@ -21,14 +21,13 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var addToCartButton: UIButton!
     
-    @IBOutlet weak var orderNowButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
     @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var quantityLabel: UITextField!
     
     var item: Model?
-    let db = Firestore.firestore()
     let ref = Database.database().reference().child("cart")
     let user = Auth.auth().currentUser
     
@@ -69,15 +68,15 @@ class DetailViewController: UIViewController {
     
     func setUpElements(){
         Utilities.styleFilledButton(addToCartButton)
-        Utilities.styleFilledButton(orderNowButton)
-
+        Utilities.styleHollowButton(cancelButton)
+        
     }
     
     //MARK: - Add To Cart
     
     @IBAction func addToCartTapped(_ sender: Any) {
         sendToCart()
-
+        
     }
     
     func sendToCart(){
@@ -97,7 +96,7 @@ class DetailViewController: UIViewController {
             self.ref.child(uid).child((self.item?.name)!).setValue(add)
             postAlert(title: "Added to Cart")
             //self.dismiss(animated: true, completion: nil)
-
+            
         }
         
         
@@ -107,75 +106,11 @@ class DetailViewController: UIViewController {
     
     //MARK: - Order
     
-    @IBAction func orderTapped(_ sender: Any) {
-        showAlert()
-        
+    
+    @IBAction func cancelTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func showAlert(){
-        let alert = UIAlertController(title: "Order", message: "How would you like to place the order?", preferredStyle: .actionSheet)
-        
-        alert.addAction(UIAlertAction(title: "Cash on Delivery", style: .default, handler: { (action) in
-            self.conformationAlert()
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Esewa", style: .default, handler: { (action) in
-            print("Esewa")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-        
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-    }
-    
-    func conformationAlert(){
-        let confirmAlert = UIAlertController(title: "Confirm Your Order", message: "Once you click confirm order will be placed and it cannot be canceled", preferredStyle: .alert)
-        
-        confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-        
-        confirmAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
-            self.orderPlaced()
-        }))
-        
-        DispatchQueue.main.async {
-            self.present(confirmAlert, animated: true, completion: nil)
-        }
-    }
-    
-    func orderPlaced(){
-        let orderRef = Database.database().reference().child("orders")
-        
-        if let user = user{
-            let uid = user.uid
-            
-            let add = ["item": self.item!.name!,
-                       "desc":self.item!.desc!,
-                       "photo": self.item!.photo!,
-                       "price": self.item!.price!,
-                       "quantity": quantityLabel.text!,
-                       "paymentMethod": "Cash on Delivery"] as [String : Any]
-            
-            orderRef.child(uid).child((self.item?.name)!).setValue(add)
-            
-            ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if snapshot.hasChild((self.item?.name)!){
-                    self.ref.child(uid).child((self.item?.name)!).removeValue()
-                    
-                    
-                }
-                
-            })
-            
-        }
-        postAlert(title: "Your order is on its way")
-        
-        
-        
-    }
     func postAlert(title: String) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)

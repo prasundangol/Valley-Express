@@ -9,9 +9,9 @@
 import UIKit
 
 class ItemTableViewCell: UITableViewCell {
-
     
-   
+    
+    
     @IBOutlet weak var photoView: UIImageView!
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -24,10 +24,10 @@ class ItemTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -64,22 +64,22 @@ class ItemTableViewCell: UITableViewCell {
         
         let dataTask = session.dataTask(with: url!) { (data, response, error) in
             if error == nil && data != nil{
-            
-            //Save the data in the cache
-            CacheManager.setImageCache(url!.absoluteString,data: data)
-            
-            //Check that the downloaded url matches the item image url that this cell is currently set to display
-            if url?.absoluteString != self.item!.photo{
-                //Item cell has been recycled for another image and no longer matches the image that was downloaded
-                print("not mathced")
-                return
-            }
-            
-            let image = UIImage(data: data!)
-            
-            DispatchQueue.main.async {
-                self.photoView.image = image
-            }
+                
+                //Save the data in the cache
+                CacheManager.setImageCache(url!.absoluteString,data: data)
+                
+                //Check that the downloaded url matches the item image url that this cell is currently set to display
+                if url?.absoluteString != self.item!.photo{
+                    //Item cell has been recycled for another image and no longer matches the image that was downloaded
+                    print("not mathced")
+                    return
+                }
+                
+                let image = UIImage(data: data!)
+                
+                DispatchQueue.main.async {
+                    self.photoView.image = image
+                }
             }
         }
         
@@ -89,6 +89,6 @@ class ItemTableViewCell: UITableViewCell {
         
     }
     
-
-
+    
+    
 }

@@ -22,6 +22,7 @@ class OrderViewController: UIViewController {
     var titleList = [String]()
     var itemKeys = String()
     var itemList = [Model]()
+    var tots = [[Model]]()
     
     
     override func viewDidLoad() {
@@ -45,43 +46,27 @@ class OrderViewController: UIViewController {
                 let data = child as! DataSnapshot
                 self.keys = data.key
                 self.titleList.append(self.keys)
-                self.ref.child(self.user!).child(self.keys).observe(.value) { (snaps) in
-                        self.ref.child(self.user!).child(self.keys).observe(DataEventType.value) { (snapshot) in
-                            if snapshot.childrenCount > 0{
-                                self.itemList.removeAll()
-                                for items in snapshot.children.allObjects as![DataSnapshot]{
-                                    let itemObject = items.value as? [String: AnyObject]
-                                    let itemName = itemObject?["item"] as! String
-                                    let itemDesc = itemObject?["desc"] as! String
-                                    let itemPhoto = itemObject?["photo"] as! String
-                                    let itemPrice = itemObject?["price"] as! String
-                                    let itemQuantity = itemObject?["quantity"] as! String
-                                    let item = Model(name: itemName, photo: itemPhoto, desc: itemDesc, price: itemPrice, quantity: itemQuantity)
-                                    self.itemList.append(item)
-                                }
-                                print("tsk\(self.itemList)")
-                            }
-                            DispatchQueue.main.async {
-                                self.orderTableView.reloadData()
-                            }
-                            
-                            
-                        }
-                    
-                }
             }
+            self.orderTableView.reloadData()
             self.activityIndicator.stopAnimating()
-
+            
         }        
     }
     //Moving data for detail order view ie CartViewController
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Stroyboard.orderToOrderList{
+            let destVC = segue.destination as! CartViewController
+            //destVC.itemList = (sender as? [Model])!
+            destVC.keys = sender as! String
+            destVC.segueDetect = 1
+        }
+    }
     
 }
 
 extension OrderViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("haha\(titleList.count)")
         return titleList.count
     }
     
@@ -95,7 +80,10 @@ extension OrderViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item: String
         orderTableView.deselectRow(at: indexPath, animated: true)
+        item = titleList[indexPath.row]
+        performSegue(withIdentifier: Constants.Stroyboard.orderToOrderList, sender: item)
         
     }
     

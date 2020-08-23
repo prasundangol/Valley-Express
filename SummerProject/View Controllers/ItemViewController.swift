@@ -79,7 +79,7 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
                                 let itemDesc = itemObject?["desc"]
                                 let itemPhoto = itemObject?["photo"]
                                 let itemPrice = itemObject?["price"]
-                                let item = Model(name: itemName as! String, photo: itemPhoto as! String, desc: itemDesc as! String, price: itemPrice as! String, quantity: "1")
+                                let item = Model(name: itemName as? String, photo: itemPhoto as? String, desc: itemDesc as? String, price: itemPrice as? String, quantity: "1")
                                 self.itemList.append(item)
                             }
                             self.tots.append(self.itemList)
@@ -170,17 +170,11 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
         return tots[section].count
     }
     
-    //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    //        return data[section].count
-    //    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Stroyboard.itemCell , for: indexPath) as! ItemTableViewCell
         let item: Model
         item = tots[indexPath.section][indexPath.row]
         cell.setCell(item)
-        
-        //cell.testLabel.text = data[indexPath.section][indexPath.row] (test ko lagi theeyo)
         return cell
     }
     

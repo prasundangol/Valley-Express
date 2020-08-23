@@ -19,7 +19,7 @@ class SearchViewController: UIViewController {
     var itemsArray = [NSDictionary]()
     var filteredItems = [NSDictionary]()
     
-
+    
     
     @IBOutlet weak var searchTableView: UITableView!
     
@@ -38,10 +38,10 @@ class SearchViewController: UIViewController {
         searchTableView.dataSource = self
         getItems()
         
-
+        
     }
     
-
+    
     //Seting up navigation bar
     private func setupNavigationBar(){
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -54,25 +54,25 @@ class SearchViewController: UIViewController {
     
     func getItems(){
         ref.observe(.value) { (snap) in
-        for child in snap.children{
-            let data = child as! DataSnapshot
-            self.keys = data.key
-            self.titleList.append(self.keys)
-            self.ref.child(self.keys).queryOrdered(byChild: "item").observe(.childAdded , with: { (snapshot) in
-            self.itemsArray.append(snapshot.value as! NSDictionary)
+            for child in snap.children{
+                let data = child as! DataSnapshot
+                self.keys = data.key
+                self.titleList.append(self.keys)
+                self.ref.child(self.keys).queryOrdered(byChild: "item").observe(.childAdded , with: { (snapshot) in
+                    self.itemsArray.append(snapshot.value as! NSDictionary)
+                    
+                    self.searchTableView.insertRows(at: [IndexPath(row: self.itemsArray.count-1, section: 0)], with: .automatic)
+                    
+                }) { (error) in
+                    print(error.localizedDescription)
+                }
+                
+            }
+            self.activityIndicator.stopAnimating()
             
-            self.searchTableView.insertRows(at: [IndexPath(row: self.itemsArray.count-1, section: 0)], with: .automatic)
-            
-        }) { (error) in
-            print(error.localizedDescription)
         }
         
     }
-            self.activityIndicator.stopAnimating()
-
-    }
-    
-}
     //Moving data to view at detail view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Stroyboard.searchToDetailSegue{
@@ -92,7 +92,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
         }
         return itemsArray.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchTableViewCell
         let item: NSDictionary?
@@ -100,16 +100,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
         if searchController.isActive && searchController.searchBar.text != ""{
             //itemList.removeAll()
             item = filteredItems[indexPath.row]
-            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String, quantity: "1")
+            test = Model(name: item!["item"] as? String, photo: item!["photo"] as? String, desc: item!["desc"] as? String, price: item!["price"] as? String, quantity: "1")
         }
         else{
             item = self.itemsArray[indexPath.row]
-            test = Model(name: item!["item"] as! String, photo: item!["photo"] as! String, desc: item!["desc"] as! String, price: item!["price"] as! String, quantity: "1")
+            test = Model(name: item!["item"] as? String, photo: item!["photo"] as? String, desc: item!["desc"] as? String, price: item!["price"] as? String, quantity: "1")
         }
         cell.itemLabel.text = item?["item"] as? String
         
         itemList.append(test!)
-        print(itemList)
         return cell
     }
     
@@ -117,7 +116,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
         let item: Model
         searchTableView.deselectRow(at: indexPath, animated: true)
         item = itemList[indexPath.row]
-                performSegue(withIdentifier: Constants.Stroyboard.searchToDetailSegue, sender: item)
+        performSegue(withIdentifier: Constants.Stroyboard.searchToDetailSegue, sender: item)
     }
     
     

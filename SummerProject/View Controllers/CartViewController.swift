@@ -13,7 +13,7 @@ import FirebaseAuth
 class CartViewController: UIViewController {
     
     
-
+    
     @IBOutlet weak var cartTableView: UITableView!
     
     @IBOutlet weak var subTotalLabel: UILabel!
@@ -26,61 +26,78 @@ class CartViewController: UIViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var paymentMethodLabel: UILabel!
+    
+    
+    
     var keys = String()
-        var titleList = [String]()
-        var itemList = [Model]()
-        var ref = Database.database().reference().child("cart")
-        let uid = Auth.auth().currentUser?.uid
-        let detailController = DetailViewController()
-        var priceList = [String]()
-        var value = 0
-        
-        
+    var titleList = [String]()
+    var itemList = [Model]()
+    var ref = Database.database().reference().child("cart")
+    let uid = Auth.auth().currentUser?.uid
+    let detailController = DetailViewController()
+    var priceList = [String]()
+    var value = 0
+    var segueDetect = 0
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
-        getItems()
         cartTableView.delegate = self
         cartTableView.dataSource = self
-        setTotal()
+        if segueDetect == 1{
+            orderList()
+            checkOutButton.title = ""
+            checkOutButton.isEnabled = false
+            self.title = "Orders"
+        }
+        else{
+            getItems()
+            setTotal()
+            checkOutButton.title = "Check Out"
+            paymentMethodLabel.text = "TBD"
+            self.title = "Cart"
+        }
+        
         
     }
     
-
-        func getItems(){
-            //Setting items in cell with section seperation
-                    ref.child(uid!).observe(DataEventType.value) { (snapshot) in
-                         if snapshot.childrenCount > 0{
-                            self.itemList.removeAll()
-                             for items in snapshot.children.allObjects as![DataSnapshot]{
-                                 let itemObject = items.value as? [String: Any]
-                                 let itemName = itemObject?["item"]
-                                 let itemDesc = itemObject?["desc"]
-                                 let itemPhoto = itemObject?["photo"]
-                                let itemPrice = itemObject?["price"] as! String
-                                let itemQuantity = itemObject?["quantity"]
-                                let item = Model(name: itemName as! String, photo: itemPhoto as! String , desc: itemDesc as! String, price: itemPrice , quantity: itemQuantity as! String)
-                                self.itemList.append(item)
-                                self.priceList.append(itemPrice)
-                             }
-                            DispatchQueue.main.async {
-                                self.cartTableView.reloadData()
-                            }
-
-                         }
-                        self.activityIndicator.stopAnimating()
-                     }
+    
+    func getItems(){
+        //Setting items in cell with section seperation
+        ref.child(uid!).observe(DataEventType.value) { (snapshot) in
+            if snapshot.childrenCount > 0{
+                self.itemList.removeAll()
+                for items in snapshot.children.allObjects as![DataSnapshot]{
+                    let itemObject = items.value as? [String: Any]
+                    let itemName = itemObject?["item"]
+                    let itemDesc = itemObject?["desc"]
+                    let itemPhoto = itemObject?["photo"]
+                    let itemPrice = itemObject?["price"] as? String
+                    let itemQuantity = itemObject?["quantity"]
+                    let item = Model(name: itemName as? String, photo: itemPhoto as? String , desc: itemDesc as? String, price: itemPrice, quantity: itemQuantity as? String)
+                    self.itemList.append(item)
+                    self.priceList.append(itemPrice!)
                 }
+                DispatchQueue.main.async {
+                    self.cartTableView.reloadData()
+                }
+                
+            }
+            self.activityIndicator.stopAnimating()
+        }
+    }
     
     func setTotal(){
         ref.child(uid!).observe(DataEventType.value) { (snapshot) in
             if self.itemList.count == 0{
                 self.checkOutButton.isEnabled = false
-                   }
-                   else{
+            }
+            else{
                 self.checkOutButton.isEnabled = true
-                   }
+            }
             guard self.itemList.count != 0 else {
                 self.subTotalLabel.text = "Rs. 0"
                 self.vatPriceLabel.text = "Rs. 0"
@@ -97,18 +114,18 @@ class CartViewController: UIViewController {
             self.vatPriceLabel.text = ("Rs. ") + String(vat)
             let grandTotal = self.value + Int(vat)
             self.grandTotalPriceLabel.text = ("Rs. ") + String(grandTotal)
-
+            
         }
     }
-            
+    
     //Moving data to view at detail view controller
-            override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == Constants.Stroyboard.cartToDetailSegue{
-                    let destVC = segue.destination as! DetailViewController
-                    destVC.item = sender as? Model
-                    
-                }
-            }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Stroyboard.cartToDetailSegue{
+            let destVC = segue.destination as! DetailViewController
+            destVC.item = sender as? Model
+            
+        }
+    }
     
     
     
@@ -152,28 +169,26 @@ class CartViewController: UIViewController {
             
             for index in 0...itemList.count - 1 {
                 let add = ["item": itemList[index].name!,
-                "desc":itemList[index].desc!,
-                "photo": itemList[index].photo!,
-                "price": itemList[index].price!,
-                "quantity": itemList[index].quantity!,
-                "paymentMethod": "Cash on Delivery"] as [String : Any]
+                           "desc":itemList[index].desc!,
+                           "photo": itemList[index].photo!,
+                           "price": itemList[index].price!,
+                           "quantity": itemList[index].quantity!,
+                           "paymentMethod": "Cash on Delivery"] as [String : Any]
                 orderRef.child(uid).child(Utilities.getDate()).child(itemList[index].name!).setValue(add)
+                
+                //Rmoving from cart after order
+                ref.child(user).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if snapshot.hasChild(self.itemList[index].name!){
+                        self.ref.child(user).child(self.itemList[index].name!).removeValue()
+                        
+                        
+                    }
+                    
+                })
                 
                 
             }
-            
-            
-            
-//            ref.child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//
-//                if snapshot.hasChild((self.item?.name)!){
-//                    self.ref.child(uid).child((self.item?.name)!).removeValue()
-//
-//
-//                }
-//
-//            })
-            
         }
         postAlert(title: "Your order is on its way")
         
@@ -200,13 +215,64 @@ class CartViewController: UIViewController {
         showAlert()
     }
     
-    
+    func orderList(){
+        let orderRef = Database.database().reference().child("orders")
+        guard uid != nil else{
+            return
         }
+        
+        orderRef.child(self.uid!).child(self.keys).observe(.value) { (snaps) in
+            orderRef.child(self.uid!).child(self.keys).observe(DataEventType.value) { (snapshot) in
+                if snapshot.childrenCount > 0{
+                    self.itemList.removeAll()
+                    for items in snapshot.children.allObjects as![DataSnapshot]{
+                        let itemObject = items.value as? [String: AnyObject]
+                        let itemName = itemObject?["item"] as! String
+                        let itemDesc = itemObject?["desc"] as! String
+                        let itemPhoto = itemObject?["photo"] as! String
+                        let itemPrice = itemObject?["price"] as! String
+                        let itemQuantity = itemObject?["quantity"] as! String
+                        let paymentMethod = itemObject?["paymentMethod"] as! String
+                        let item = Model(name: itemName, photo: itemPhoto, desc: itemDesc, price: itemPrice, quantity: itemQuantity, paymentMethod: paymentMethod)
+                        self.itemList.append(item)
+                        self.priceList.append(itemPrice)
+                    }
+                    DispatchQueue.main.async {
+                        self.cartTableView.reloadData()
+                    }
+                    //Total For Orders
+                    guard self.itemList.count != 0 else {
+                        return
+                    }
+                    for index in 0...self.priceList.count-1{
+                        self.value = self.value + Int(self.priceList[index])!
+                        self.paymentMethodLabel.text = self.itemList[index].paymentMethod
+                        
+                    }
+                    self.subTotalLabel.text = ("Rs. ") + String(self.value)
+                    let vat = round(Float(13/100 * Float(self.value)))
+                    self.vatPriceLabel.text = ("Rs. ") + String(vat)
+                    let grandTotal = self.value + Int(vat)
+                    self.grandTotalPriceLabel.text = ("Rs. ") + String(grandTotal)
+                    
+                }
+                
+            }
+            
+        }
+        
+        self.activityIndicator.stopAnimating()
+        
+    }
+}
+
+
+
 
 
 
 extension CartViewController: UITableViewDelegate,UITableViewDataSource{
-        
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemList.count
         
@@ -221,12 +287,12 @@ extension CartViewController: UITableViewDelegate,UITableViewDataSource{
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let item: Model
-//        item = itemList[indexPath.row]
-//        performSegue(withIdentifier: Constants.Stroyboard.cartToDetailSegue, sender: item)
-//        cartTableView.deselectRow(at: indexPath, animated: true)
-//    }
+    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //        let item: Model
+    //        item = itemList[indexPath.row]
+    //        performSegue(withIdentifier: Constants.Stroyboard.cartToDetailSegue, sender: item)
+    //        cartTableView.deselectRow(at: indexPath, animated: true)
+    //    }
     
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -250,12 +316,12 @@ extension CartViewController: UITableViewDelegate,UITableViewDataSource{
             
             cartTableView.endUpdates()
             
-
-
+            
+            
             
         }
         
-            
+        
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

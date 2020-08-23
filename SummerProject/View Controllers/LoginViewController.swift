@@ -21,9 +21,12 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var errorLabel: UILabel!
     
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        activityIndicator.hidesWhenStopped = true
         setUpElements()
         
 
@@ -33,6 +36,7 @@ class LoginViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         if Auth.auth().currentUser != nil {
             self.performSegue(withIdentifier: "alreadyLoggedIn", sender: nil)
+            activityIndicator.startAnimating()
         }
     }
     
@@ -50,6 +54,7 @@ class LoginViewController: UIViewController {
     
 
     @IBAction func loginTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         //Validate text fields
         
         //Cleaned versions of the textfield
@@ -59,6 +64,7 @@ class LoginViewController: UIViewController {
         //Signing in the user
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             if error != nil{
+                self.activityIndicator.stopAnimating()
                 //Couldn't sign in
                 self.errorLabel.text = "Incorrect Password"
                 self.errorLabel.alpha = 1

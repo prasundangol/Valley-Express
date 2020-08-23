@@ -45,7 +45,7 @@ class ItemTableViewCell: UITableViewCell {
         //Set the description
         self.descriptionLabel.text = item?.desc
         
-        //Check where there is a photo url or not
+        //Check whether there is a photo url or not
         guard self.item!.photo != "" else {
             return
         }

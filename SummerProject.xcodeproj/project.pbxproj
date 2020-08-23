@@ -27,6 +27,8 @@
 		CDB02C3A24D3D2D2002A3B70 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB02C3924D3D2D2002A3B70 /* SearchViewController.swift */; };
 		CDB02C3D24D3D751002A3B70 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB02C3C24D3D751002A3B70 /* SearchTableViewCell.swift */; };
 		CDD746E524E50FFC00EF680B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD746E424E50FFC00EF680B /* CacheManager.swift */; };
+		CDD8171B24F14A8B00D7CFB6 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8171A24F14A8B00D7CFB6 /* OrderViewController.swift */; };
+		CDD8171D24F14C6200D7CFB6 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8171C24F14C6200D7CFB6 /* OrderTableViewCell.swift */; };
 		CDDA53D824C58A5400E93907 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDA53D724C58A5400E93907 /* ItemTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		CDB02C3924D3D2D2002A3B70 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CDB02C3C24D3D751002A3B70 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		CDD746E424E50FFC00EF680B /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		CDD8171A24F14A8B00D7CFB6 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		CDD8171C24F14C6200D7CFB6 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		CDDA53D724C58A5400E93907 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +127,7 @@
 				CDB02C3924D3D2D2002A3B70 /* SearchViewController.swift */,
 				CD082EB924D68A7100A3B267 /* DetailViewController.swift */,
 				CD284E1124D7D7CD00282D65 /* CartViewController.swift */,
+				CDD8171A24F14A8B00D7CFB6 /* OrderViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 				CDB02C3C24D3D751002A3B70 /* SearchTableViewCell.swift */,
 				CD284E1324D7DADD00282D65 /* CartTableViewCell.swift */,
 				CD1FD39324EB9F9900A9525A /* SideMenuTableViewController.swift */,
+				CDD8171C24F14C6200D7CFB6 /* OrderTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,8 +301,10 @@
 				CD284E1224D7D7CD00282D65 /* CartViewController.swift in Sources */,
 				CDB02C3A24D3D2D2002A3B70 /* SearchViewController.swift in Sources */,
 				CD6886AE24B9D6CC006622F3 /* AppDelegate.swift in Sources */,
+				CDD8171D24F14C6200D7CFB6 /* OrderTableViewCell.swift in Sources */,
 				CD6886C924B9E9BD006622F3 /* Utilities.swift in Sources */,
 				CD1FD39424EB9F9900A9525A /* SideMenuTableViewController.swift in Sources */,
+				CDD8171B24F14A8B00D7CFB6 /* OrderViewController.swift in Sources */,
 				CD6886C224B9D71B006622F3 /* SignUpViewController.swift in Sources */,
 				CD0D8A2124C973F400958143 /* Model.swift in Sources */,
 				CD6886C424B9D738006622F3 /* LoginViewController.swift in Sources */,

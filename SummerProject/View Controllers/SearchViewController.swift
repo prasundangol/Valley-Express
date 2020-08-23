@@ -23,11 +23,13 @@ class SearchViewController: UIViewController {
     
     @IBOutlet weak var searchTableView: UITableView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
@@ -66,6 +68,8 @@ class SearchViewController: UIViewController {
         }
         
     }
+            self.activityIndicator.stopAnimating()
+
     }
     
 }
@@ -111,6 +115,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item: Model
+        searchTableView.deselectRow(at: indexPath, animated: true)
         item = itemList[indexPath.row]
                 performSegue(withIdentifier: Constants.Stroyboard.searchToDetailSegue, sender: item)
     }

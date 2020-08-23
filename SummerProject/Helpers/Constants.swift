@@ -19,6 +19,10 @@ struct Constants {
         static let searchToDetailSegue = "searchToDetail"
         static let searchViewController = "SearchVC"
         static let cartViewController = "CartVC"
+        static let orderCell = "orderCell"
+        static let orderViewController = "OrderVC"
+        static let menuToOrderSegue = "MenuToOrder"
+        static let orderToOrderList = "orderToOrderList"
         
     }
     

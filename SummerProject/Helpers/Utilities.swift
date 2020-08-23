@@ -45,18 +45,6 @@ class Utilities {
         button.tintColor = UIColor.black
     }
     
-    static func inCartButton(_ button:UIButton) {
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 25.0
-        button.tintColor = UIColor.black
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("Added To Cart", for: .normal)
-        button.isUserInteractionEnabled = false
-        button.backgroundColor = UIColor.white
-        
-       
-    }
     
     static func isPasswordValid(_ password : String) -> Bool {
         
@@ -69,6 +57,19 @@ class Utilities {
 
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
+    }
+    
+    static func getDate() -> String{
+        let currentDate = Date()
+        
+        
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .medium
+        
+        let dateTimeString = formatter.string(from: currentDate)
+        
+        return dateTimeString
     }
     
     

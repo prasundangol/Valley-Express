@@ -68,42 +68,36 @@ class DetailViewController: UIViewController {
     }
     
     func setUpElements(){
+        Utilities.styleFilledButton(addToCartButton)
         Utilities.styleFilledButton(orderNowButton)
-        ref.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if snapshot.hasChild((self.item?.name)!){
-                //print("has item")
-                Utilities.inCartButton(self.addToCartButton)
-                
-            }
-            else{
-                DispatchQueue.main.async {
-                    Utilities.styleFilledButton(self.addToCartButton)
-                }
-                
-            }
-        })
+
     }
     
     //MARK: - Add To Cart
     
     @IBAction func addToCartTapped(_ sender: Any) {
         sendToCart()
-        Utilities.inCartButton(addToCartButton)
+
     }
     
     func sendToCart(){
         //Utilities.styleFilledButton(self.addToCartButton)
         if let user = user{
             let uid = user.uid
+            let quantity = Int((quantityLabel.text)!)
+            let price = Int((item?.price)!)
+            let total = String(quantity! * price!)
             
-            let add = ["item": self.item?.name,
-                       "desc":self.item?.desc,
-                       "photo": self.item?.photo,
-                       "price": self.item?.price,
-                       "quantity": quantityLabel.text]
+            let add = ["item": (self.item?.name)!,
+                       "desc":(self.item?.desc)!,
+                       "photo": (self.item?.photo)!,
+                       "price": total,
+                       "quantity": quantityLabel.text!] as [String : Any]
             
             self.ref.child(uid).child((self.item?.name)!).setValue(add)
+            postAlert(title: "Added to Cart")
+            //self.dismiss(animated: true, completion: nil)
+
         }
         
         
@@ -187,7 +181,7 @@ class DetailViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
         // delays execution of code to dismiss
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: {
             alert.dismiss(animated: true, completion: nil)
             self.dismiss(animated: true, completion: nil)
             

@@ -17,6 +17,9 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
     
     @IBOutlet weak var itemTable: UITableView!
     
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     @IBAction func didTappedSideMenu(_ sender: Any) {
         
         present(sideMenu!,animated: true)
@@ -24,11 +27,7 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
     }
     
     private var sideMenu: SideMenuNavigationController?
-    let data = [["adf","afdg","dfgd"],
-                ["kkk","sss","tttt"],
-                ["yyy","lll"]]
     var tots = [[Model]]()
-    let data2 = ["ello","mate","fast"]
     var keys = String()
     var titleList = [String]()
     var itemList = [Model]()
@@ -37,8 +36,10 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
     
     
     override func viewDidLoad() {
-        let menu = SideMenuTableViewController(with: ["Menu","Cart","Search","My Orders"])
+        let menu = SideMenuTableViewController(with: ["Menu","Cart","Search","My Orders","Logout"])
         sideMenu = SideMenuNavigationController (rootViewController: menu)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
         setupNavigationBar()
         itemTable.delegate = self
         itemTable.dataSource = self
@@ -90,6 +91,7 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
                         
                     }
                 }
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -114,7 +116,6 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
         if segue.identifier == Constants.Stroyboard.itemToDetailSegue{
             let destVC = segue.destination as! DetailViewController
             destVC.item = sender as? Model
-            
         }
     }
     
@@ -134,6 +135,14 @@ class ItemViewController: UIViewController, MenuControllerDelegate  {
             
             let searchController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.searchViewController) as! SearchViewController
             navigationController?.pushViewController(searchController, animated: true)
+            break
+        case "Logout":
+            loggedOut()
+            break
+        case "My Orders":
+            sideMenu?.dismiss(animated: false, completion: nil)
+            let orderController = self.storyboard?.instantiateViewController(identifier: Constants.Stroyboard.orderViewController) as! OrderViewController
+            self.navigationController?.pushViewController(orderController, animated: true)
             break
         default:
             sideMenu?.dismiss(animated: true, completion: nil)
@@ -200,6 +209,7 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item: Model
+        itemTable.deselectRow(at: indexPath, animated: true)
         item = tots[indexPath.section][indexPath.row]
         performSegue(withIdentifier: Constants.Stroyboard.itemToDetailSegue, sender: item)
     }
